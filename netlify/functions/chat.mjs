@@ -1,25 +1,28 @@
 
-export default async function handler(request) {
-  const headers = {
-    "Content-Type": "application/json",
-    "Cache-Control": "no-store"
-  };
-
+export default async (request) => {
   if (request.method !== "POST") {
     return new Response(
-      JSON.stringify({ error: "Only POST requests are supported." }),
-      { status: 405, headers }
+      JSON.stringify({ error: "Please send a POST request." }),
+      {
+        status: 405,
+        headers: { "Content-Type": "application/json" }
+      }
     );
   }
 
   const apiKey = process.env.OPENAI_API_KEY;
 
   if (!apiKey) {
+    console.error("OPENAI_API_KEY is missing from Netlify environment variables.");
+
     return new Response(
       JSON.stringify({
         error: "The AI service is not configured. Please contact the website administrator."
       }),
-      { status: 503, headers }
+      {
+        status: 500,
+        headers: { "Content-Type": "application/json" }
+      }
     );
   }
 
@@ -29,112 +32,142 @@ export default async function handler(request) {
     body = await request.json();
   } catch {
     return new Response(
-      JSON.stringify({ error: "Invalid request." }),
-      { status: 400, headers }
+      JSON.stringify({ error: "Invalid request body." }),
+      {
+        status: 400,
+        headers: { "Content-Type": "application/json" }
+      }
     );
   }
 
   const message =
     typeof body.message === "string" ? body.message.trim() : "";
 
-  const language = body.language === "hi" ? "Hindi" : "English";
+  if (!message) {
+    return new Response(
+      JSON.stringify({ error: "Please enter a question." }),
+      {
+        status: 400,
+        headers: { "Content-Type": "application/json" }
+      }
+    );
+  }
 
-  if (!message || message.length > 1000) {
+  if (message.length > 4000) {
     return new Response(
       JSON.stringify({
-        error: "Please enter a question between 1 and 1000 characters."
+        error: "Please shorten your question to 4,000 characters or fewer."
       }),
-      { status: 400, headers }
+      {
+        status: 400,
+        headers: { "Content-Type": "application/json" }
+      }
     );
   }
 
   const instructions = `
-You are CyberAware Assistant, an educational cybersecurity awareness
-assistant for college students and local communities in India.
+You are CyberAware, a helpful cybersecurity awareness assistant
+for college students and the local community in India.
 
-Answer in ${language}. Use simple language for beginners.
+Give clear, practical advice about phishing, UPI scams, online fraud,
+suspicious calls, passwords, account security, privacy, and cybercrime reporting.
 
-Help with phishing, UPI scams, OTP fraud, malware, passwords, online
-privacy, account security, cyberbullying and reporting suspected cybercrime.
+Never ask users to share passwords, OTPs, PINs, full card numbers,
+or other sensitive personal information.
 
-You are NOT a police officer, lawyer, government official or emergency service.
-Never claim to file a police complaint or contact police for the user.
-Never ask for passwords, OTPs, PINs, bank details, recovery codes or sensitive
-identity information.
+For suspected financial cyber fraud in India, advise the user to contact
+their bank immediately and call the national cyber financial fraud helpline
+1930 as soon as possible. They can also use https://cybercrime.gov.in/.
+For immediate physical danger, advise calling 112 or local police.
 
-For suspected financial cyber fraud in India, advise the user to contact their
-bank or payment provider immediately and call 1930 promptly. Refer them to
-https://cybercrime.gov.in/.
-
-For immediate danger or an emergency in India, advise contacting local police
-or calling 112.
-
-Suggest preserving relevant evidence and securing affected accounts when
-appropriate. Do not invent phone numbers, complaint status or legal guarantees.
-If uncertain, say so and refer to official sources.
-
-Keep the answer concise, practical and focused on cyber safety.
-Do not request personal information. Your advice is educational, not a substitute
-for official assistance or legal advice.
+Do not claim to be police, a lawyer, or an official government service.
+Explain uncertainty when appropriate and recommend official sources
+for important decisions. Be concise, friendly, and easy to understand.
 `;
 
   try {
-    const response = await fetch("https://api.openai.com/v1/responses", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${apiKey}`
-      },
-      body: JSON.stringify({
-        model: "gpt-4.1-mini",
-        instructions,
-        input: message,
-        max_output_tokens: 450,
-        store: false
-      })
-    });
+    const response = await fetch(
+      "https://api.openai.com/v1/responses",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${apiKey}`
+        },
+        body: JSON.stringify({
+          model: "gpt-4.1-mini",
+          instructions,
+          input: message,
+          store: false
+        })
+      }
+    );
+
+    const result = await response.json();
 
     if (!response.ok) {
-      // Do not expose API keys or internal provider errors to website visitors.
-      console.error("AI provider returned status:", response.status);
+      // Keep API credentials and sensitive details out of public responses.
+      console.error(
+        "OpenAI API request failed:",
+        response.status,
+        result?.error?.code || "unknown_error",
+        result?.error?.message || "No error message returned"
+      );
+
+      const status = response.status === 429 ? 429 : 502;
 
       return new Response(
         JSON.stringify({
-          error: "The AI service is temporarily unavailable. Please try again later."
+          error: response.status === 429
+            ? "The AI service has reached a usage limit. Please try again later."
+            : "The AI service could not answer right now. Please try again later."
         }),
-        { status: 502, headers }
+        {
+          status,
+          headers: { "Content-Type": "application/json" }
+        }
       );
     }
 
-    const data = await response.json();
-
-    const answer = (data.output || [])
-      .filter(item => item.type === "message")
-      .flatMap(item => item.content || [])
-      .filter(item => item.type === "output_text")
-      .map(item => item.text)
+    const answer = (result.output || [])
+      .flatMap((item) => item.content || [])
+      .filter((item) => item.type === "output_text")
+      .map((item) => item.text)
       .join("\n")
       .trim();
 
     if (!answer) {
+      console.error("OpenAI returned no text output.");
+
       return new Response(
-        JSON.stringify({ error: "No answer was returned. Please try again." }),
-        { status: 502, headers }
+        JSON.stringify({
+          error: "No answer was returned. Please try asking another question."
+        }),
+        {
+          status: 502,
+          headers: { "Content-Type": "application/json" }
+        }
       );
     }
 
     return new Response(
       JSON.stringify({ answer }),
-      { status: 200, headers }
+      {
+        status: 200,
+        headers: { "Content-Type": "application/json" }
+      }
     );
   } catch (error) {
-    console.error("CyberAware AI request failed.");
+    console.error("Chat function error:", error.message);
 
     return new Response(
       JSON.stringify({
-        error: "Could not connect to the AI service. Please try again later."
+        error: "The AI service is temporarily unavailable. Please try again."
       }),
-      { status: 502, headers }
+      {
+        status: 500,
+        headers: { "Content-Type": "application/json" }
+      }
     );
   }
-}
+};
