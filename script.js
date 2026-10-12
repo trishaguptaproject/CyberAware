@@ -9,7 +9,10 @@ if (menuToggle && navLinks) {
   menuToggle.addEventListener("click", function () {
     const isOpen = navLinks.classList.toggle("open");
     menuToggle.setAttribute("aria-expanded", String(isOpen));
-    menuToggle.setAttribute("aria-label", isOpen ? "Close navigation" : "Open navigation");
+    menuToggle.setAttribute(
+      "aria-label",
+      isOpen ? "Close navigation" : "Open navigation"
+    );
     menuToggle.textContent = isOpen ? "✕" : "☰";
   });
 
@@ -37,40 +40,38 @@ function setCyberLanguage(language) {
   document.documentElement.lang = selectedLanguage;
 
   document.querySelectorAll("[data-en][data-hi]").forEach(function (element) {
-    element.textContent = element.dataset[selectedLanguage];
+    element.textContent = element.getAttribute("data-" + selectedLanguage);
   });
 
-  document.querySelectorAll("option[data-en][data-hi]").forEach(function (option) {
-    option.textContent = option.dataset[selectedLanguage];
-  });
+  const chatInputElement = document.getElementById("chatInput");
 
-  const chatInput = document.getElementById("chatInput");
-  if (chatInput) {
-    chatInput.placeholder = selectedLanguage === "hi"
+  if (chatInputElement) {
+    chatInputElement.placeholder = selectedLanguage === "hi"
       ? "अपना सवाल लिखें..."
       : "Type your question...";
-    chatInput.setAttribute("aria-label",
-      selectedLanguage === "hi" ? "साइबर सुरक्षा का सवाल लिखें" : "Type a cyber safety question");
-  }
 
-  const waitingMessage = document.getElementById("chatWaiting");
-  if (waitingMessage) {
-    waitingMessage.textContent = selectedLanguage === "hi"
-      ? "आपके सवाल का जवाब तैयार किया जा रहा है..."
-      : "Preparing your answer...";
+    chatInputElement.setAttribute(
+      "aria-label",
+      selectedLanguage === "hi"
+        ? "साइबर सुरक्षा का सवाल लिखें"
+        : "Type a cyber safety question"
+    );
   }
 
   try {
     localStorage.setItem("cyberaware-language", selectedLanguage);
   } catch (error) {
-    // Language selection still works if browser storage is disabled.
+    // Language switching still works if storage is unavailable.
   }
 }
 
 let initialLanguage = "en";
+
 try {
   initialLanguage = localStorage.getItem("cyberaware-language") || "en";
-} catch (error) {}
+} catch (error) {
+  // Use English by default.
+}
 
 if (languageSelect) {
   languageSelect.value = initialLanguage;
@@ -104,17 +105,25 @@ if (quizForm && quizResult) {
     }
 
     let score = 0;
+
     if (formData.get("q1") === "b") score++;
     if (formData.get("q2") === "c") score++;
     if (formData.get("q3") === "b") score++;
 
     quizResult.textContent = document.documentElement.lang === "hi"
       ? "आपका स्कोर " + score + "/3 है। " +
-        (score === 3 ? "बहुत बढ़िया! आप साइबर सुरक्षा जानते हैं।" : "सुरक्षा सुझाव पढ़ें और फिर कोशिश करें।")
+        (score === 3
+          ? "बहुत बढ़िया! आप साइबर सुरक्षा जानते हैं।"
+          : "सुरक्षा सुझाव पढ़ें और फिर कोशिश करें।")
       : "Your score is " + score + "/3. " +
-        (score === 3 ? "Excellent! You know your cyber safety basics." : "Review the safety tips and try again.");
+        (score === 3
+          ? "Excellent! You know your cyber safety basics."
+          : "Review the safety tips and try again.");
 
-    quizResult.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    quizResult.scrollIntoView({
+      behavior: "smooth",
+      block: "nearest"
+    });
   });
 }
 
@@ -125,20 +134,27 @@ const chatMessages = document.getElementById("chatMessages");
 const chatSend = document.getElementById("chatSend");
 
 function addChatMessage(messageText, sender) {
+  if (!chatMessages) return null;
+
   const message = document.createElement("div");
+
   message.className = "chat-message " +
     (sender === "user" ? "user-message" : "bot-message");
-  // textContent prevents the answer from being interpreted as HTML.
+
   message.textContent = messageText;
   chatMessages.appendChild(message);
   chatMessages.scrollTop = chatMessages.scrollHeight;
+
   return message;
 }
 
 async function sendCyberQuestion(question) {
+  if (!chatInput || !chatSend || !chatMessages) return;
+
   const language = languageSelect ? languageSelect.value : "en";
 
   addChatMessage(question, "user");
+
   chatInput.value = "";
   chatInput.disabled = true;
   chatSend.disabled = true;
@@ -149,12 +165,19 @@ async function sendCyberQuestion(question) {
       : "Preparing your answer...",
     "bot"
   );
-  waitingMessage.id = "chatWaiting";
+
+  if (!waitingMessage) {
+    chatInput.disabled = false;
+    chatSend.disabled = false;
+    return;
+  }
 
   try {
     const response = await fetch("/.netlify/functions/chat", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json"
+      },
       body: JSON.stringify({
         message: question,
         language: language
@@ -162,29 +185,56 @@ async function sendCyberQuestion(question) {
     });
 
     let data;
+
     try {
       data = await response.json();
     } catch (error) {
-      throw new Error("The server returned an invalid response.");
+      throw new Error(
+        "The server returned a non-JSON response (HTTP " +
+        response.status + "). Check your Netlify function deployment."
+      );
     }
 
     if (!response.ok) {
-      throw new Error(data.error || "The AI service is unavailable.");
+      console.error("Chat API error:", response.status, data);
+
+      throw new Error(
+        data.error ||
+        "Chat request failed with HTTP " + response.status
+      );
     }
 
-    waitingMessage.textContent = data.answer || (
-      language === "hi" ? "कोई जवाब नहीं मिला।" : "No answer was returned."
-    );
+    if (!data.answer) {
+      throw new Error("The chatbot response did not contain an answer.");
+    }
+
+    waitingMessage.textContent = data.answer;
+
   } catch (error) {
+    console.error("CyberAware chatbot error:", error);
+
+    // Show the actual error in the browser while keeping the message safe.
+    let message = error.message || "Unknown error";
+
+    if (
+      message.includes("Failed to fetch") ||
+      message.includes("NetworkError")
+    ) {
+      message = "Cannot connect to the chatbot function. Check that " +
+        "netlify/functions/chat.mjs exists and has deployed.";
+    }
+
     waitingMessage.textContent = language === "hi"
-      ? "अभी AI सेवा उपलब्ध नहीं है। वित्तीय साइबर धोखाधड़ी होने पर अपने बैंक को तुरंत सूचित करें और भारत में 1930 पर कॉल करें। आधिकारिक पोर्टल: https://cybercrime.gov.in/"
-      : "The AI service is unavailable right now. For financial cyber fraud in India, contact your bank immediately and call 1930. Official portal: https://cybercrime.gov.in/";
+      ? "चैटबॉट में समस्या है: " + message +
+        " वित्तीय साइबर धोखाधड़ी होने पर अपने बैंक से तुरंत संपर्क करें और भारत में 1930 पर कॉल करें।"
+      : "Chatbot error: " + message +
+        " For financial cyber fraud in India, contact your bank immediately and call 1930.";
+
   } finally {
-    waitingMessage.removeAttribute("id");
     chatInput.disabled = false;
     chatSend.disabled = false;
-    chatInput.focus();
     chatMessages.scrollTop = chatMessages.scrollHeight;
+    chatInput.focus();
   }
 }
 
@@ -193,6 +243,7 @@ if (chatForm && chatInput && chatMessages && chatSend) {
     event.preventDefault();
 
     const question = chatInput.value.trim();
+
     if (!question || chatSend.disabled) return;
 
     if (question.length > 1000) {
@@ -213,11 +264,14 @@ if (chatForm && chatInput && chatMessages && chatSend) {
       if (chatSend.disabled) return;
 
       const language = languageSelect ? languageSelect.value : "en";
+
       const question = language === "hi"
         ? button.dataset.questionHi
         : button.dataset.questionEn;
 
-      if (question) sendCyberQuestion(question);
+      if (question) {
+        sendCyberQuestion(question);
+      }
     });
   });
 }
