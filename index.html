@@ -1,1201 +1,421 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#f97316">
-  <meta name="description" content="CyberAware helps college students and the local community learn about cybersecurity, online fraud, phishing, and digital safety.">
-  <title>CyberAware | Cyber Security Awareness</title>
-
-  <style>
-    :root {
-      --orange: #f45b0b;
-      --orange-dark: #c2410c;
-      --cream: #fff7ed;
-      --white: #ffffff;
-      --dark: #1f2937;
-      --muted: #64748b;
-      --border: #fed7aa;
-      --light: #f1f5f9;
-      --green: #15803d;
-      --shadow: 0 8px 28px rgba(31, 41, 55, 0.07);
-    }
-
-    * {
-      box-sizing: border-box;
-      scroll-behavior: smooth;
-    }
-
-    body {
-      margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
-      color: var(--dark);
-      background: var(--white);
-      line-height: 1.65;
-    }
-
-    a {
-      color: var(--orange-dark);
-    }
-
-    button, input, textarea, select {
-      font: inherit;
-    }
-
-    button {
-      cursor: pointer;
-    }
-
-    .container {
-      width: min(1160px, 92%);
-      margin: auto;
-    }
-
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 50;
-      background: rgba(255,255,255,0.97);
-      border-bottom: 1px solid #e5e7eb;
-    }
-
-    .navbar {
-      min-height: 82px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 20px;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      color: var(--dark);
-      font-size: 27px;
-      font-weight: 800;
-      text-decoration: none;
-      white-space: nowrap;
-    }
-
-    .brand-icon {
-      display: inline-grid;
-      place-items: center;
-      width: 45px;
-      height: 45px;
-      border-radius: 15px;
-      background: var(--cream);
-      font-size: 26px;
-    }
-
-    .brand span:last-child span {
-      color: var(--orange);
-    }
-
-    .nav-right {
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-      gap: 18px;
-    }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-    }
-
-    .nav-links a {
-      color: #475569;
-      font-weight: 700;
-      text-decoration: none;
-    }
-
-    .nav-links a:hover {
-      color: var(--orange);
-    }
-
-    .language-control {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      color: var(--orange-dark);
-      font-weight: 700;
-    }
-
-    .language-control select {
-      padding: 10px;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      background: white;
-      color: var(--dark);
-    }
-
-    .menu-toggle {
-      display: none;
-      border: 1px solid var(--border);
-      background: white;
-      border-radius: 9px;
-      padding: 7px 12px;
-      font-size: 22px;
-    }
-
-    section {
-      padding: 76px 0;
-      scroll-margin-top: 95px;
-    }
-
-    .hero {
-      padding: 90px 0;
-      background: linear-gradient(115deg, #fff7ed, #ffffff);
-    }
-
-    .hero-grid {
-      display: grid;
-      grid-template-columns: 1.15fr 0.85fr;
-      gap: 48px;
-      align-items: center;
-    }
-
-    .eyebrow {
-      display: inline-block;
-      padding: 7px 13px;
-      border-radius: 30px;
-      background: #ffedd5;
-      color: var(--orange-dark);
-      font-size: 14px;
-      font-weight: 800;
-    }
-
-    h1 {
-      margin: 18px 0;
-      font-size: clamp(38px, 5vw, 61px);
-      line-height: 1.12;
-      letter-spacing: -1.5px;
-    }
-
-    .orange {
-      color: var(--orange);
-    }
-
-    .hero p, .section-intro {
-      color: var(--muted);
-      font-size: 18px;
-    }
-
-    .button-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 13px;
-      margin-top: 25px;
-    }
-
-    .btn {
-      display: inline-block;
-      padding: 13px 20px;
-      border: 0;
-      border-radius: 11px;
-      background: var(--orange);
-      color: white;
-      font-weight: 800;
-      text-align: center;
-      text-decoration: none;
-    }
-
-    .btn:hover {
-      background: var(--orange-dark);
-    }
-
-    .btn-outline {
-      background: white;
-      color: var(--orange-dark);
-      border: 1px solid var(--border);
-    }
-
-    .btn-outline:hover {
-      background: var(--cream);
-    }
-
-    .hero-card {
-      padding: 32px;
-      background: white;
-      border: 1px solid var(--border);
-      border-radius: 25px;
-      box-shadow: var(--shadow);
-    }
-
-    .shield {
-      font-size: 76px;
-      text-align: center;
-    }
-
-    .hero-card h2 {
-      text-align: center;
-    }
-
-    .check-list {
-      list-style: none;
-      padding: 0;
-    }
-
-    .check-list li {
-      padding: 8px 0;
-    }
-
-    .check-list li::before {
-      content: "✓";
-      color: var(--green);
-      font-weight: bold;
-      margin-right: 10px;
-    }
-
-    .section-heading {
-      max-width: 760px;
-      margin: 0 auto 38px;
-      text-align: center;
-    }
-
-    .section-heading h2 {
-      margin: 0 0 10px;
-      font-size: clamp(30px, 4vw, 42px);
-      line-height: 1.2;
-    }
-
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 22px;
-    }
-
-    .card {
-      padding: 25px;
-      border: 1px solid #e5e7eb;
-      border-radius: 18px;
-      background: white;
-      box-shadow: var(--shadow);
-    }
-
-    .card-icon {
-      font-size: 35px;
-    }
-
-    .card h3 {
-      margin: 10px 0;
-    }
-
-    .card p {
-      margin-bottom: 0;
-      color: var(--muted);
-    }
-
-    .cream-section {
-      background: var(--cream);
-    }
-
-    .tips-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 16px;
-    }
-
-    .tip {
-      display: flex;
-      gap: 15px;
-      padding: 20px;
-      background: white;
-      border: 1px solid var(--border);
-      border-radius: 15px;
-    }
-
-    .tip-icon {
-      font-size: 27px;
-    }
-
-    .tip h3 {
-      margin: 0 0 5px;
-    }
-
-    .tip p {
-      margin: 0;
-      color: var(--muted);
-    }
-
-    .panel {
-      max-width: 850px;
-      margin: auto;
-      padding: 30px;
-      background: white;
-      border: 1px solid #e5e7eb;
-      border-radius: 20px;
-      box-shadow: var(--shadow);
-    }
-
-    .question {
-      padding: 18px 0;
-      border-bottom: 1px solid #e5e7eb;
-    }
-
-    .question p {
-      margin-top: 0;
-      font-weight: 800;
-    }
-
-    .answer-option {
-      display: block;
-      margin: 10px 0;
-      color: #475569;
-    }
-
-    .answer-option input {
-      margin-right: 8px;
-      accent-color: var(--orange);
-    }
-
-    .result {
-      margin-top: 18px;
-      padding: 15px;
-      background: var(--cream);
-      border-radius: 10px;
-      font-weight: 700;
-    }
-
-    .form-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 18px;
-    }
-
-    .field {
-      display: flex;
-      flex-direction: column;
-      gap: 7px;
-    }
-
-    .field.full {
-      grid-column: 1 / -1;
-    }
-
-    .field label {
-      font-weight: 700;
-    }
-
-    .field input,
-    .field select,
-    .field textarea {
-      width: 100%;
-      padding: 12px 13px;
-      border: 1px solid #cbd5e1;
-      border-radius: 10px;
-      background: white;
-      color: var(--dark);
-    }
-
-    .field input:focus,
-    .field select:focus,
-    .field textarea:focus {
-      outline: 2px solid #fdba74;
-      border-color: var(--orange);
-    }
-
-    .small-note {
-      color: var(--muted);
-      font-size: 14px;
-    }
-
-    .help-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 20px;
-    }
-
-    .help-number {
-      font-size: 30px;
-      font-weight: 800;
-      color: var(--orange-dark);
-    }
-
-    .chat-layout {
-      display: grid;
-      grid-template-columns: 0.9fr 1.1fr;
-      gap: 32px;
-      align-items: start;
-    }
-
-    .suggestion-list {
-      display: grid;
-      gap: 12px;
-      margin: 25px 0;
-    }
-
-    .suggestion {
-      padding: 15px 17px;
-      background: white;
-      color: var(--orange-dark);
-      text-align: left;
-      font-weight: 700;
-      border: 1px solid var(--border);
-      border-radius: 13px;
-    }
-
-    .suggestion:hover {
-      background: #ffedd5;
-    }
-
-    .chat-box {
-      display: flex;
-      flex-direction: column;
-      min-height: 550px;
-      overflow: hidden;
-      border: 1px solid var(--border);
-      border-radius: 23px;
-      background: white;
-      box-shadow: var(--shadow);
-    }
-
-    .chat-header {
-      padding: 18px 22px;
-      background: #fff7ed;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .chat-header h3 {
-      margin: 0;
-    }
-
-    .chat-header p {
-      margin: 3px 0 0;
-      color: var(--muted);
-      font-size: 14px;
-    }
-
-    .chat-messages {
-      flex: 1;
-      min-height: 280px;
-      max-height: 460px;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 13px;
-      padding: 22px;
-    }
-
-    .chat-message {
-      max-width: 90%;
-      padding: 13px 16px;
-      border-radius: 15px;
-      white-space: pre-wrap;
-      overflow-wrap: anywhere;
-    }
-
-    .bot-message {
-      align-self: flex-start;
-      background: var(--light);
-      color: var(--dark);
-    }
-
-    .user-message {
-      align-self: flex-end;
-      background: var(--orange);
-      color: white;
-    }
-
-    .chat-form {
-      display: flex;
-      align-items: stretch;
-      gap: 10px;
-      padding: 15px;
-      border-top: 1px solid #e5e7eb;
-    }
-
-    .chat-form textarea {
-      flex: 1;
-      min-width: 0;
-      min-height: 65px;
-      resize: vertical;
-      padding: 12px;
-      border: 1px solid #cbd5e1;
-      border-radius: 12px;
-    }
-
-    .chat-form button {
-      align-self: center;
-    }
-
-    .chat-form button:disabled {
-      opacity: 0.6;
-      cursor: wait;
-    }
-
-    footer {
-      padding: 30px 0;
-      background: #1f2937;
-      color: white;
-      text-align: center;
-    }
-
-    footer p {
-      margin: 5px 0;
-      color: #cbd5e1;
-    }
-
-    footer a {
-      color: #fdba74;
-    }
-
-    @media (max-width: 1000px) {
-      .nav-links {
-        gap: 12px;
-      }
-
-      .nav-right {
-        gap: 12px;
-      }
-
-      .hero-grid, .chat-layout {
-        grid-template-columns: 1fr 1fr;
-      }
-    }
-
-    @media (max-width: 800px) {
-      .navbar {
-        flex-wrap: wrap;
-        padding: 12px 0;
-      }
-
-      .nav-right {
-        gap: 10px;
-      }
-
-      .menu-toggle {
-        display: inline-block;
-      }
-
-      .nav-links {
-        display: none;
-        position: absolute;
-        left: 0;
-        right: 0;
-        top: 100%;
-        padding: 18px 4%;
-        background: white;
-        border-bottom: 1px solid #e5e7eb;
-        flex-direction: column;
-        align-items: stretch;
-      }
-
-      .nav-links.open {
-        display: flex;
-      }
-
-      .nav-links a {
-        padding: 7px 0;
-      }
-
-      .hero-grid, .chat-layout {
-        grid-template-columns: 1fr;
-      }
-
-      .cards, .help-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-
-      .hero {
-        padding: 65px 0;
-      }
-    }
-
-    @media (max-width: 560px) {
-      section {
-        padding: 55px 0;
-      }
-
-      .brand {
-        font-size: 23px;
-      }
-
-      .brand-icon {
-        width: 38px;
-        height: 38px;
-      }
-
-      .language-control span {
-        display: none;
-      }
-
-      .cards, .tips-grid, .help-grid, .form-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .field.full {
-        grid-column: auto;
-      }
-
-      .panel, .hero-card {
-        padding: 22px;
-      }
-
-      .chat-box {
-        min-height: 500px;
-      }
-
-      .chat-form {
-        flex-direction: column;
-      }
-
-      .chat-form button {
-        width: 100%;
-      }
-    }
-  </style>
+  <meta name="theme-color" content="#EA580C">
+  <meta name="description" content="CyberAware helps college students and the local community learn about cybersecurity, online fraud, and digital safety.">
+  <title>CyberAware | Stay Safe Online</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
 </head>
-
 <body>
-  <header>
-    <div class="container navbar">
+  <header class="site-header">
+    <div class="container nav-wrap">
       <a class="brand" href="#home" aria-label="CyberAware home">
         <span class="brand-icon">🛡️</span>
-        <span>Cyber<span>Aware</span></span>
+        <span>Cyber<span class="orange">Aware</span></span>
       </a>
 
-      <div class="nav-right">
-        <button
-          class="menu-toggle"
-          id="menuToggle"
-          type="button"
-          aria-label="Open navigation"
-          aria-expanded="false"
-          aria-controls="navLinks"
-        >☰</button>
+      <button class="menu-toggle" id="menuToggle"
+        aria-label="Open navigation" aria-expanded="false">☰</button>
 
-        <nav class="nav-links" id="navLinks" aria-label="Main navigation">
-          <a href="#home" data-en="Home" data-hi="होम">Home</a>
-          <a href="#threats" data-en="Threats" data-hi="खतरे">Threats</a>
-          <a href="#tips" data-en="Safety Tips" data-hi="सुरक्षा सुझाव">Safety Tips</a>
-          <a href="#quiz" data-en="Quiz" data-hi="क्विज़">Quiz</a>
-          <a href="#survey" data-en="Survey" data-hi="सर्वेक्षण">Survey</a>
-          <a href="#help" data-en="Get Help" data-hi="सहायता">Get Help</a>
-          <a href="#assistant" data-en="AI Assistant" data-hi="AI सहायक">AI Assistant</a>
-        </nav>
+      <nav class="nav-links" id="navLinks">
+        <a href="#home" data-en="Home" data-hi="होम">Home</a>
+        <a href="#threats" data-en="Threats" data-hi="खतरे">Threats</a>
+        <a href="#tips" data-en="Safety Tips" data-hi="सुरक्षा सुझाव">Safety Tips</a>
+        <a href="#quiz" data-en="Quiz" data-hi="प्रश्नोत्तरी">Quiz</a>
+        <a href="#survey" data-en="Survey" data-hi="सर्वे">Survey</a>
+        <a href="#help" data-en="Get Help" data-hi="सहायता">Get Help</a>
+        <a href="#chatbot" data-en="AI Assistant" data-hi="AI सहायक">AI Assistant</a>
+      </nav>
 
-        <label class="language-control">
-          <span data-en="Language" data-hi="भाषा">Language</span>
-          <select id="languageSelect" aria-label="Choose language">
-            <option value="en">English</option>
-            <option value="hi">हिन्दी</option>
-          </select>
-        </label>
-      </div>
+      <label class="language-control">
+        <span data-en="Language" data-hi="भाषा">Language</span>
+        <select id="languageSelect" aria-label="Choose language">
+          <option value="en">English</option>
+          <option value="hi">हिन्दी</option>
+        </select>
+      </label>
     </div>
   </header>
 
   <main>
-    <!-- HOME -->
     <section class="hero" id="home">
       <div class="container hero-grid">
-        <div>
-          <span class="eyebrow"
-            data-en="STAY SAFE IN THE DIGITAL WORLD"
-            data-hi="डिजिटल दुनिया में सुरक्षित रहें">
-            STAY SAFE IN THE DIGITAL WORLD
-          </span>
+        <div class="hero-content">
+          <span class="eyebrow" data-en="CYBER SECURITY AWARENESS PROJECT"
+            data-hi="साइबर सुरक्षा जागरूकता परियोजना">CYBER SECURITY AWARENESS PROJECT</span>
 
-          <h1>
-            <span data-en="Your Safety." data-hi="आपकी सुरक्षा।">Your Safety.</span>
-            <span class="orange" data-en="Your Data." data-hi="आपका डेटा।">Your Data.</span>
-            <span data-en="Your Responsibility." data-hi="आपकी ज़िम्मेदारी।">Your Responsibility.</span>
+          <h1 data-en="Your Safety. Your Data. Your Responsibility."
+            data-hi="आपकी सुरक्षा। आपका डेटा। आपकी ज़िम्मेदारी।">
+            Your Safety.<br>Your Data.<br><span>Your Responsibility.</span>
           </h1>
 
-          <p
-            data-en="Learn how to recognize online scams, protect your personal information, and use the internet responsibly."
-            data-hi="ऑनलाइन धोखाधड़ी पहचानना, अपनी व्यक्तिगत जानकारी सुरक्षित रखना और इंटरनेट का ज़िम्मेदारी से उपयोग करना सीखें।">
-            Learn how to recognize online scams, protect your personal information, and use the internet responsibly.
+          <p data-en="Helping college students and the local community identify cyber threats, protect personal information, and stay safer online."
+            data-hi="कॉलेज के विद्यार्थियों और स्थानीय समुदाय को साइबर खतरों की पहचान करने, निजी जानकारी सुरक्षित रखने और इंटरनेट पर सुरक्षित रहने में मदद करें।">
+            Helping college students and the local community identify cyber threats, protect personal information, and stay safer online.
           </p>
 
-          <div class="button-row">
-            <a class="btn" href="#tips"
-              data-en="Explore Safety Tips"
-              data-hi="सुरक्षा सुझाव देखें">Explore Safety Tips</a>
-            <a class="btn btn-outline" href="#quiz"
-              data-en="Test Your Knowledge"
-              data-hi="अपना ज्ञान जाँचें">Test Your Knowledge</a>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#tips"
+              data-en="Explore Safety Tips →" data-hi="सुरक्षा सुझाव देखें →">Explore Safety Tips →</a>
+            <a class="btn btn-outline" href="#survey"
+              data-en="Take the Survey" data-hi="सर्वे में भाग लें">Take the Survey</a>
+          </div>
+
+          <div class="hero-note">
+            <span>✓</span>
+            <span data-en="Think before you click. Protect before you share."
+              data-hi="क्लिक करने से पहले सोचें। साझा करने से पहले सुरक्षित करें।">
+              Think before you click. Protect before you share.
+            </span>
           </div>
         </div>
 
-        <div class="hero-card">
+        <div class="hero-art" aria-label="Cybersecurity illustration">
+          <div class="orbit orbit-one"></div>
+          <div class="orbit orbit-two"></div>
           <div class="shield">🛡️</div>
-          <h2 data-en="Think Before You Click" data-hi="क्लिक करने से पहले सोचें">
-            Think Before You Click
-          </h2>
-          <ul class="check-list">
-            <li data-en="Protect passwords and OTPs" data-hi="पासवर्ड और OTP सुरक्षित रखें">Protect passwords and OTPs</li>
-            <li data-en="Verify links before opening" data-hi="लिंक खोलने से पहले जाँचें">Verify links before opening</li>
-            <li data-en="Never trust urgent payment demands" data-hi="जल्दी भुगतान के दबाव पर भरोसा न करें">Never trust urgent payment demands</li>
-            <li data-en="Report cybercrime promptly" data-hi="साइबर अपराध की तुरंत रिपोर्ट करें">Report cybercrime promptly</li>
-          </ul>
+          <div class="float-card card-top">🔒 <span data-en="Privacy protected" data-hi="गोपनीयता सुरक्षित">Privacy protected</span></div>
+          <div class="float-card card-bottom">✓ <span data-en="Stay alert online" data-hi="ऑनलाइन सतर्क रहें">Stay alert online</span></div>
+          <div class="dot dot-one"></div>
+          <div class="dot dot-two"></div>
         </div>
       </div>
     </section>
 
-    <!-- THREATS -->
-    <section id="threats">
+    <section class="stats-strip">
+      <div class="container stats-grid">
+        <div><strong>01</strong><span data-en="Recognize threats" data-hi="खतरों को पहचानें">Recognize threats</span></div>
+        <div><strong>02</strong><span data-en="Protect your data" data-hi="अपना डेटा सुरक्षित रखें">Protect your data</span></div>
+        <div><strong>03</strong><span data-en="Report cybercrime" data-hi="साइबर अपराध की रिपोर्ट करें">Report cybercrime</span></div>
+      </div>
+    </section>
+
+    <section class="section" id="threats">
       <div class="container">
         <div class="section-heading">
-          <h2 data-en="Know the Common Cyber Threats" data-hi="सामान्य साइबर खतरों को जानें">
-            Know the Common Cyber Threats
-          </h2>
-          <p class="section-intro"
-            data-en="Understanding common scams is the first step towards preventing them."
-            data-hi="सामान्य धोखाधड़ी को समझना उनसे बचने का पहला कदम है।">
-            Understanding common scams is the first step towards preventing them.
+          <span class="eyebrow" data-en="KNOW THE RISKS" data-hi="जोखिमों को जानें">KNOW THE RISKS</span>
+          <h2 data-en="Common Cyber Threats" data-hi="आम साइबर खतरे">Common Cyber Threats</h2>
+          <p data-en="Learn how online criminals try to trick people and steal information or money."
+            data-hi="जानें कि ऑनलाइन अपराधी लोगों को कैसे धोखा देकर उनकी जानकारी या पैसे चुराने की कोशिश करते हैं।">
+            Learn how online criminals try to trick people and steal information or money.
           </p>
         </div>
 
-        <div class="cards">
-          <article class="card">
+        <div class="cards-grid">
+          <article class="info-card">
             <div class="card-icon">🎣</div>
             <h3 data-en="Phishing" data-hi="फ़िशिंग">Phishing</h3>
-            <p data-en="Fake emails, messages, and websites designed to steal passwords or financial information."
-               data-hi="पासवर्ड या वित्तीय जानकारी चुराने के लिए बनाए गए नकली ईमेल, संदेश और वेबसाइट।">
-              Fake emails, messages, and websites designed to steal passwords or financial information.
+            <p data-en="Fake emails, messages, or websites designed to steal your login details or financial information."
+              data-hi="नकली ईमेल, संदेश या वेबसाइट जो आपके लॉगिन विवरण या वित्तीय जानकारी चुराने के लिए बनाई जाती हैं।">
+              Fake emails, messages, or websites designed to steal your login details or financial information.
             </p>
+            <span class="tag" data-en="Check links" data-hi="लिंक जाँचें">Check links</span>
           </article>
 
-          <article class="card">
-            <div class="card-icon">📱</div>
-            <h3 data-en="UPI and Payment Scams" data-hi="UPI और भुगतान धोखाधड़ी">UPI and Payment Scams</h3>
-            <p data-en="Fraudsters may trick you into approving a payment or sharing a UPI PIN or OTP."
-               data-hi="धोखेबाज़ आपको भुगतान स्वीकार करने या UPI PIN अथवा OTP साझा करने के लिए बहका सकते हैं।">
-              Fraudsters may trick you into approving a payment or sharing a UPI PIN or OTP.
+          <article class="info-card">
+            <div class="card-icon">💳</div>
+            <h3 data-en="UPI & Payment Scams" data-hi="UPI और भुगतान धोखाधड़ी">UPI & Payment Scams</h3>
+            <p data-en="Fraudsters may trick you into approving a payment or sharing an OTP, PIN, or payment details."
+              data-hi="धोखेबाज़ आपसे भुगतान मंज़ूर करवाने या OTP, PIN अथवा भुगतान विवरण साझा करवाने की कोशिश कर सकते हैं।">
+              Fraudsters may trick you into approving a payment or sharing an OTP, PIN, or payment details.
             </p>
+            <span class="tag" data-en="Never share your PIN" data-hi="PIN साझा न करें">Never share your PIN</span>
           </article>
 
-          <article class="card">
-            <div class="card-icon">🎭</div>
-            <h3 data-en="Identity Theft" data-hi="पहचान की चोरी">Identity Theft</h3>
-            <p data-en="Someone uses your personal information without permission to commit fraud."
-               data-hi="कोई व्यक्ति धोखाधड़ी करने के लिए आपकी व्यक्तिगत जानकारी का बिना अनुमति उपयोग करता है।">
-              Someone uses your personal information without permission to commit fraud.
+          <article class="info-card">
+            <div class="card-icon">🔑</div>
+            <h3 data-en="Password Attacks" data-hi="पासवर्ड पर हमले">Password Attacks</h3>
+            <p data-en="Weak or reused passwords can allow someone to access multiple accounts."
+              data-hi="कमज़ोर या बार-बार इस्तेमाल किए गए पासवर्ड से कोई व्यक्ति आपके कई अकाउंट में प्रवेश कर सकता है।">
+              Weak or reused passwords can allow someone to access multiple accounts.
             </p>
+            <span class="tag" data-en="Use unique passwords" data-hi="अलग-अलग पासवर्ड रखें">Use unique passwords</span>
           </article>
 
-          <article class="card">
-            <div class="card-icon">📞</div>
-            <h3 data-en="Fake Calls" data-hi="नकली कॉल">Fake Calls</h3>
-            <p data-en="Scammers impersonate bank staff, officials, or customer support to create panic."
-               data-hi="धोखेबाज़ बैंक कर्मचारी, अधिकारी या ग्राहक सेवा बनकर डर पैदा करते हैं।">
-              Scammers impersonate bank staff, officials, or customer support to create panic.
-            </p>
-          </article>
-
-          <article class="card">
-            <div class="card-icon">🔓</div>
-            <h3 data-en="Weak Passwords" data-hi="कमज़ोर पासवर्ड">Weak Passwords</h3>
-            <p data-en="Simple or reused passwords can make accounts easier to compromise."
-               data-hi="आसान या बार-बार इस्तेमाल किए गए पासवर्ड से खाते हैक होने का जोखिम बढ़ता है।">
-              Simple or reused passwords can make accounts easier to compromise.
-            </p>
-          </article>
-
-          <article class="card">
+          <article class="info-card">
             <div class="card-icon">🦠</div>
-            <h3 data-en="Malicious Downloads" data-hi="हानिकारक डाउनलोड">Malicious Downloads</h3>
-            <p data-en="Untrusted apps and attachments can install malware or steal data."
-               data-hi="अविश्वसनीय ऐप और अटैचमेंट मैलवेयर इंस्टॉल कर सकते हैं या डेटा चुरा सकते हैं।">
-              Untrusted apps and attachments can install malware or steal data.
+            <h3 data-en="Malware" data-hi="मैलवेयर">Malware</h3>
+            <p data-en="Harmful software may steal data, monitor activity, or damage your device."
+              data-hi="हानिकारक सॉफ़्टवेयर डेटा चुरा सकता है, गतिविधियों पर नज़र रख सकता है या डिवाइस को नुकसान पहुँचा सकता है।">
+              Harmful software may steal data, monitor activity, or damage your device.
             </p>
+            <span class="tag" data-en="Download carefully" data-hi="सावधानी से डाउनलोड करें">Download carefully</span>
+          </article>
+
+          <article class="info-card">
+            <div class="card-icon">👤</div>
+            <h3 data-en="Identity Theft" data-hi="पहचान की चोरी">Identity Theft</h3>
+            <p data-en="Someone may misuse personal details, documents, or account information without permission."
+              data-hi="कोई व्यक्ति आपकी निजी जानकारी, दस्तावेज़ या अकाउंट विवरण का बिना अनुमति दुरुपयोग कर सकता है।">
+              Someone may misuse personal details, documents, or account information without permission.
+            </p>
+            <span class="tag" data-en="Limit what you share" data-hi="कम जानकारी साझा करें">Limit what you share</span>
+          </article>
+
+          <article class="info-card">
+            <div class="card-icon">💬</div>
+            <h3 data-en="Cyberbullying" data-hi="साइबर बुलिंग">Cyberbullying</h3>
+            <p data-en="Harassment, threats, or humiliating content shared through digital platforms."
+              data-hi="डिजिटल प्लेटफ़ॉर्म पर परेशान करना, धमकी देना या अपमानजनक सामग्री साझा करना।">
+              Harassment, threats, or humiliating content shared through digital platforms.
+            </p>
+            <span class="tag" data-en="Save evidence and report" data-hi="सबूत सुरक्षित रखें और रिपोर्ट करें">Save evidence and report</span>
           </article>
         </div>
       </div>
     </section>
 
-    <!-- SAFETY TIPS -->
-    <section class="cream-section" id="tips">
+    <section class="section soft-section" id="tips">
       <div class="container">
         <div class="section-heading">
-          <h2 data-en="Simple Ways to Stay Safe" data-hi="सुरक्षित रहने के आसान तरीके">
-            Simple Ways to Stay Safe
-          </h2>
-          <p class="section-intro"
-            data-en="Build safer digital habits every day."
-            data-hi="हर दिन सुरक्षित डिजिटल आदतें अपनाएँ।">
-            Build safer digital habits every day.
+          <span class="eyebrow" data-en="BUILD SAFE HABITS" data-hi="सुरक्षित आदतें अपनाएँ">BUILD SAFE HABITS</span>
+          <h2 data-en="Simple Ways to Stay Safe" data-hi="सुरक्षित रहने के आसान तरीके">Simple Ways to Stay Safe</h2>
+          <p data-en="Small habits can make a big difference to your online safety."
+            data-hi="छोटी-छोटी आदतें आपकी ऑनलाइन सुरक्षा में बड़ा अंतर ला सकती हैं।">
+            Small habits can make a big difference to your online safety.
           </p>
         </div>
 
         <div class="tips-grid">
-          <article class="tip">
-            <div class="tip-icon">🔑</div>
-            <div>
-              <h3 data-en="Use Strong Passwords" data-hi="मज़बूत पासवर्ड रखें">Use Strong Passwords</h3>
-              <p data-en="Use long, unique passwords and a password manager where possible."
-                 data-hi="लंबे और अलग-अलग पासवर्ड रखें तथा संभव हो तो पासवर्ड मैनेजर का उपयोग करें।">
-                Use long, unique passwords and a password manager where possible.
-              </p>
-            </div>
-          </article>
-
-          <article class="tip">
-            <div class="tip-icon">🔐</div>
-            <div>
-              <h3 data-en="Enable Two-Factor Authentication" data-hi="टू-फैक्टर प्रमाणीकरण चालू करें">Enable Two-Factor Authentication</h3>
-              <p data-en="Add an extra security step to important accounts."
-                 data-hi="महत्वपूर्ण खातों में सुरक्षा की एक अतिरिक्त परत जोड़ें।">
-                Add an extra security step to important accounts.
-              </p>
-            </div>
-          </article>
-
-          <article class="tip">
-            <div class="tip-icon">🔗</div>
-            <div>
-              <h3 data-en="Check Links Carefully" data-hi="लिंक सावधानी से जाँचें">Check Links Carefully</h3>
-              <p data-en="Verify the sender and website address before clicking."
-                 data-hi="क्लिक करने से पहले भेजने वाले और वेबसाइट का पता जाँचें।">
-                Verify the sender and website address before clicking.
-              </p>
-            </div>
-          </article>
-
-          <article class="tip">
-            <div class="tip-icon">💳</div>
-            <div>
-              <h3 data-en="Never Share OTPs or PINs" data-hi="OTP या PIN कभी साझा न करें">Never Share OTPs or PINs</h3>
-              <p data-en="Never disclose your OTP, UPI PIN, or banking password to callers."
-                 data-hi="किसी कॉल करने वाले को अपना OTP, UPI PIN या बैंकिंग पासवर्ड न बताएँ।">
-                Never disclose your OTP, UPI PIN, or banking password to callers.
-              </p>
-            </div>
-          </article>
-
-          <article class="tip">
-            <div class="tip-icon">⬆️</div>
-            <div>
-              <h3 data-en="Update Your Devices" data-hi="अपने उपकरण अपडेट करें">Update Your Devices</h3>
-              <p data-en="Install operating system and app updates from trusted sources."
-                 data-hi="विश्वसनीय स्रोतों से सिस्टम और ऐप अपडेट इंस्टॉल करें।">
-                Install operating system and app updates from trusted sources.
-              </p>
-            </div>
-          </article>
-
-          <article class="tip">
-            <div class="tip-icon">📶</div>
-            <div>
-              <h3 data-en="Use Public Wi-Fi Carefully" data-hi="सार्वजनिक Wi-Fi सावधानी से इस्तेमाल करें">Use Public Wi-Fi Carefully</h3>
-              <p data-en="Avoid sensitive transactions on untrusted networks."
-                 data-hi="अविश्वसनीय नेटवर्क पर संवेदनशील लेन-देन करने से बचें।">
-                Avoid sensitive transactions on untrusted networks.
-              </p>
-            </div>
-          </article>
+          <article class="tip-item"><span>01</span><div><h3 data-en="Use strong passwords" data-hi="मज़बूत पासवर्ड रखें">Use strong passwords</h3><p data-en="Use long, unique passwords for each account and consider a password manager." data-hi="हर अकाउंट के लिए लंबा और अलग पासवर्ड रखें तथा पासवर्ड मैनेजर का उपयोग करें।">Use long, unique passwords for each account and consider a password manager.</p></div></article>
+          <article class="tip-item"><span>02</span><div><h3 data-en="Enable two-factor authentication" data-hi="टू-फैक्टर ऑथेंटिकेशन चालू करें">Enable two-factor authentication</h3><p data-en="Add another verification step to important accounts whenever available." data-hi="जहाँ उपलब्ध हो, महत्वपूर्ण अकाउंट में अतिरिक्त सत्यापन चालू करें।">Add another verification step to important accounts whenever available.</p></div></article>
+          <article class="tip-item"><span>03</span><div><h3 data-en="Never share OTPs or PINs" data-hi="OTP या PIN कभी साझा न करें">Never share OTPs or PINs</h3><p data-en="Banks and legitimate support staff should not ask you to reveal your UPI PIN or password." data-hi="अपना UPI PIN या पासवर्ड किसी को न बताएँ।">Banks and legitimate support staff should not ask you to reveal your UPI PIN or password.</p></div></article>
+          <article class="tip-item"><span>04</span><div><h3 data-en="Verify before clicking" data-hi="क्लिक करने से पहले जाँचें">Verify before clicking</h3><p data-en="Check website addresses and confirm unexpected requests through a trusted channel." data-hi="वेबसाइट का पता जाँचें और अप्रत्याशित अनुरोधों की विश्वसनीय माध्यम से पुष्टि करें।">Check website addresses and confirm unexpected requests through a trusted channel.</p></div></article>
+          <article class="tip-item"><span>05</span><div><h3 data-en="Update your devices" data-hi="डिवाइस अपडेट रखें">Update your devices</h3><p data-en="Install operating-system and app updates from official sources." data-hi="ऑपरेटिंग सिस्टम और ऐप के अपडेट आधिकारिक स्रोतों से इंस्टॉल करें।">Install operating-system and app updates from official sources.</p></div></article>
+          <article class="tip-item"><span>06</span><div><h3 data-en="Think before sharing" data-hi="साझा करने से पहले सोचें">Think before sharing</h3><p data-en="Avoid posting sensitive personal details, travel plans, or private documents publicly." data-hi="निजी जानकारी, यात्रा की योजनाएँ या निजी दस्तावेज़ सार्वजनिक रूप से साझा न करें।">Avoid posting sensitive personal details, travel plans, or private documents publicly.</p></div></article>
         </div>
       </div>
     </section>
 
-    <!-- QUIZ -->
-    <section id="quiz">
-      <div class="container">
+    <section class="section" id="quiz">
+      <div class="container narrow-container">
         <div class="section-heading">
-          <h2 data-en="Cyber Safety Quiz" data-hi="साइबर सुरक्षा क्विज़">Cyber Safety Quiz</h2>
-          <p class="section-intro"
-            data-en="Answer all three questions to check your awareness."
-            data-hi="अपनी जागरूकता जाँचने के लिए तीनों सवालों के जवाब दें।">
-            Answer all three questions to check your awareness.
+          <span class="eyebrow" data-en="TEST YOUR KNOWLEDGE" data-hi="अपना ज्ञान जाँचें">TEST YOUR KNOWLEDGE</span>
+          <h2 data-en="Cyber Safety Quiz" data-hi="साइबर सुरक्षा प्रश्नोत्तरी">Cyber Safety Quiz</h2>
+          <p data-en="Choose an answer for each question and check your score."
+            data-hi="हर प्रश्न का उत्तर चुनें और अपना स्कोर देखें।">
+            Choose an answer for each question and check your score.
           </p>
         </div>
 
-        <form class="panel" id="quizForm">
-          <div class="question">
-            <p data-en="1. Someone calls asking for your OTP. What should you do?"
-               data-hi="1. कोई व्यक्ति कॉल करके OTP माँगता है। आपको क्या करना चाहिए?">
-              1. Someone calls asking for your OTP. What should you do?
-            </p>
-            <label class="answer-option"><input type="radio" name="q1" value="a"> <span data-en="Share it if they sound official" data-hi="अगर वे अधिकारी लगें तो साझा करें">Share it if they sound official</span></label>
-            <label class="answer-option"><input type="radio" name="q1" value="b"> <span data-en="Never share it" data-hi="कभी साझा न करें">Never share it</span></label>
-            <label class="answer-option"><input type="radio" name="q1" value="c"> <span data-en="Send it by message" data-hi="संदेश से भेज दें">Send it by message</span></label>
-          </div>
+        <form id="quizForm" class="quiz-panel">
+          <fieldset class="quiz-question">
+            <legend data-en="1. Someone calls and asks for your bank OTP. What should you do?"
+              data-hi="1. कोई कॉल करके बैंक OTP माँगता है। आपको क्या करना चाहिए?">1. Someone calls and asks for your bank OTP. What should you do?</legend>
+            <label><input type="radio" name="q1" value="a" required> <span data-en="Share it if they sound official" data-hi="अगर वे आधिकारिक लगें तो साझा करें">Share it if they sound official</span></label>
+            <label><input type="radio" name="q1" value="b"> <span data-en="Never share it; end the call and verify independently" data-hi="कभी साझा न करें; कॉल समाप्त करें और स्वयं जाँचें">Never share it; end the call and verify independently</span></label>
+            <label><input type="radio" name="q1" value="c"> <span data-en="Send it by text message" data-hi="टेक्स्ट संदेश में भेज दें">Send it by text message</span></label>
+          </fieldset>
 
-          <div class="question">
-            <p data-en="2. How should you handle a suspicious link?"
-               data-hi="2. संदिग्ध लिंक के साथ क्या करना चाहिए?">
-              2. How should you handle a suspicious link?
-            </p>
-            <label class="answer-option"><input type="radio" name="q2" value="a"> <span data-en="Open it immediately" data-hi="तुरंत खोलें">Open it immediately</span></label>
-            <label class="answer-option"><input type="radio" name="q2" value="b"> <span data-en="Forward it to friends" data-hi="दोस्तों को भेजें">Forward it to friends</span></label>
-            <label class="answer-option"><input type="radio" name="q2" value="c"> <span data-en="Verify it before opening" data-hi="खोलने से पहले जाँचें">Verify it before opening</span></label>
-          </div>
+          <fieldset class="quiz-question">
+            <legend data-en="2. You receive a suspicious link claiming you won a prize. What is safest?"
+              data-hi="2. आपको इनाम जीतने का दावा करने वाला संदिग्ध लिंक मिलता है। सुरक्षित विकल्प क्या है?">2. You receive a suspicious link claiming you won a prize. What is safest?</legend>
+            <label><input type="radio" name="q2" value="a" required> <span data-en="Open it immediately" data-hi="तुरंत खोलें">Open it immediately</span></label>
+            <label><input type="radio" name="q2" value="b"> <span data-en="Forward it to friends" data-hi="दोस्तों को भेजें">Forward it to friends</span></label>
+            <label><input type="radio" name="q2" value="c"> <span data-en="Avoid clicking and verify the claim through an official source" data-hi="क्लिक न करें और आधिकारिक स्रोत से पुष्टि करें">Avoid clicking and verify the claim through an official source</span></label>
+          </fieldset>
 
-          <div class="question">
-            <p data-en="3. What should you do if you experience financial cyber fraud in India?"
-               data-hi="3. भारत में वित्तीय साइबर धोखाधड़ी होने पर क्या करना चाहिए?">
-              3. What should you do if you experience financial cyber fraud in India?
-            </p>
-            <label class="answer-option"><input type="radio" name="q3" value="a"> <span data-en="Wait a few weeks" data-hi="कुछ सप्ताह इंतज़ार करें">Wait a few weeks</span></label>
-            <label class="answer-option"><input type="radio" name="q3" value="b"> <span data-en="Contact your bank and call 1930 promptly" data-hi="बैंक से संपर्क करें और तुरंत 1930 पर कॉल करें">Contact your bank and call 1930 promptly</span></label>
-            <label class="answer-option"><input type="radio" name="q3" value="c"> <span data-en="Delete all messages and do nothing" data-hi="सभी संदेश हटाकर कुछ न करें">Delete all messages and do nothing</span></label>
-          </div>
+          <fieldset class="quiz-question">
+            <legend data-en="3. What should you do if you suspect online financial fraud in India?"
+              data-hi="3. भारत में ऑनलाइन वित्तीय धोखाधड़ी का संदेह हो तो क्या करें?">3. What should you do if you suspect online financial fraud in India?</legend>
+            <label><input type="radio" name="q3" value="a" required> <span data-en="Wait several days" data-hi="कई दिन इंतज़ार करें">Wait several days</span></label>
+            <label><input type="radio" name="q3" value="b"> <span data-en="Contact your bank promptly and call 1930" data-hi="तुरंत बैंक से संपर्क करें और 1930 पर कॉल करें">Contact your bank promptly and call 1930</span></label>
+            <label><input type="radio" name="q3" value="c"> <span data-en="Delete every message and do nothing else" data-hi="सभी संदेश मिटा दें और कुछ न करें">Delete every message and do nothing else</span></label>
+          </fieldset>
 
-          <button class="btn" type="submit"
-            data-en="Check My Score"
-            data-hi="मेरा स्कोर देखें">Check My Score</button>
-          <div class="result" id="quizResult" role="status" aria-live="polite"></div>
+          <button class="btn btn-primary" type="submit" data-en="Check My Score" data-hi="मेरा स्कोर देखें">Check My Score</button>
+          <div id="quizResult" class="result-message" aria-live="polite"></div>
         </form>
       </div>
     </section>
 
-    <!-- SURVEY -->
-    <section class="cream-section" id="survey">
-      <div class="container">
+    <section class="section soft-section" id="survey">
+      <div class="container narrow-container">
         <div class="section-heading">
-          <h2 data-en="Cyber Awareness Survey" data-hi="साइबर जागरूकता सर्वेक्षण">
-            Cyber Awareness Survey
-          </h2>
-          <p class="section-intro"
-            data-en="Help us understand cybersecurity awareness among students and the community."
-            data-hi="छात्रों और समुदाय में साइबर सुरक्षा जागरूकता समझने में हमारी मदद करें।">
-            Help us understand cybersecurity awareness among students and the community.
+          <span class="eyebrow" data-en="FIELD PROJECT" data-hi="फील्ड प्रोजेक्ट">FIELD PROJECT</span>
+          <h2 data-en="Cyber Awareness Survey" data-hi="साइबर जागरूकता सर्वे">Cyber Awareness Survey</h2>
+          <p data-en="Help us understand cyber safety awareness among college students and the local community."
+            data-hi="कॉलेज के विद्यार्थियों और स्थानीय समुदाय में साइबर सुरक्षा जागरूकता समझने में हमारी मदद करें।">
+            Help us understand cyber safety awareness among college students and the local community.
           </p>
         </div>
 
-        <form
-          class="panel"
-          name="cyber-awareness-survey"
-          method="POST"
-          action="thank-you.html"
-          data-netlify="true"
-          netlify-honeypot="bot-field"
-          accept-charset="UTF-8"
-        >
-          <input type="hidden" name="form-name" value="cyber-awareness-survey">
 
-          <p hidden>
-            <label>Do not fill this out:
-              <input name="bot-field">
-            </label>
+           <form name="cyber-awareness-survey" method="POST"
+  data-netlify="true" netlify-honeypot="bot-field"
+  action="thank-you.html" class="survey-form">
+          <input type="hidden" name="form-name" value="cyber-awareness-survey">
+          <p class="hidden-field">
+            <label>Do not fill this out: <input name="bot-field"></label>
           </p>
 
           <div class="form-grid">
-            <div class="field">
-              <label for="surveyName" data-en="Name (optional)" data-hi="नाम (वैकल्पिक)">Name (optional)</label>
-              <input id="surveyName" name="name" type="text" maxlength="100" autocomplete="name">
+            <div class="form-group">
+              <label for="respondentName" data-en="Name (optional)" data-hi="नाम (वैकल्पिक)">Name (optional)</label>
+              <input id="respondentName" name="name" type="text" maxlength="80"
+                autocomplete="name" placeholder="Your name">
             </div>
 
-            <div class="field">
-              <label for="surveyRole" data-en="You are a..." data-hi="आप हैं...">You are a...</label>
-              <select id="surveyRole" name="role" required>
-                <option value="" data-en="Select an option" data-hi="एक विकल्प चुनें">Select an option</option>
-                <option value="Student" data-en="College student" data-hi="कॉलेज छात्र">College student</option>
+            <div class="form-group">
+              <label for="respondentGroup" data-en="You are a..." data-hi="आप हैं...">You are a...</label>
+              <select id="respondentGroup" name="respondent-group" required>
+                <option value="" data-en="Select one" data-hi="एक चुनें">Select one</option>
+                <option value="College student" data-en="College student" data-hi="कॉलेज विद्यार्थी">College student</option>
                 <option value="Teacher" data-en="Teacher" data-hi="शिक्षक">Teacher</option>
-                <option value="Community member" data-en="Community member" data-hi="समुदाय के सदस्य">Community member</option>
+                <option value="Local community member" data-en="Local community member" data-hi="स्थानीय समुदाय के सदस्य">Local community member</option>
                 <option value="Other" data-en="Other" data-hi="अन्य">Other</option>
               </select>
             </div>
 
-            <div class="field">
-              <label for="surveyAwareness" data-en="How would you rate your cyber safety awareness?" data-hi="आप अपनी साइबर सुरक्षा जागरूकता को कैसे आँकेंगे?">How would you rate your cyber safety awareness?</label>
-              <select id="surveyAwareness" name="awareness" required>
-                <option value="" data-en="Select an option" data-hi="एक विकल्प चुनें">Select an option</option>
-                <option value="Beginner" data-en="Beginner" data-hi="शुरुआती">Beginner</option>
-                <option value="Average" data-en="Average" data-hi="औसत">Average</option>
-                <option value="Good" data-en="Good" data-hi="अच्छी">Good</option>
-                <option value="Excellent" data-en="Excellent" data-hi="बहुत अच्छी">Excellent</option>
+            <div class="form-group">
+              <label for="internetUse" data-en="How often do you use the internet?" data-hi="आप इंटरनेट का उपयोग कितनी बार करते हैं?">How often do you use the internet?</label>
+              <select id="internetUse" name="internet-use" required>
+                <option value="" data-en="Select one" data-hi="एक चुनें">Select one</option>
+                <option value="Daily" data-en="Daily" data-hi="रोज़ाना">Daily</option>
+                <option value="Several times a week" data-en="Several times a week" data-hi="सप्ताह में कई बार">Several times a week</option>
+                <option value="Occasionally" data-en="Occasionally" data-hi="कभी-कभी">Occasionally</option>
               </select>
             </div>
 
-            <div class="field">
-              <label for="surveyScam" data-en="Have you encountered a suspicious message or online scam?" data-hi="क्या आपको संदिग्ध संदेश या ऑनलाइन धोखाधड़ी का सामना करना पड़ा है?">Have you encountered a suspicious message or online scam?</label>
-              <select id="surveyScam" name="encountered-scam" required>
-                <option value="" data-en="Select an option" data-hi="एक विकल्प चुनें">Select an option</option>
+            <div class="form-group">
+              <label for="awareness" data-en="How would you rate your cyber safety knowledge?" data-hi="आप अपने साइबर सुरक्षा ज्ञान को कैसे आँकेंगे?">How would you rate your cyber safety knowledge?</label>
+              <select id="awareness" name="cyber-safety-knowledge" required>
+                <option value="" data-en="Select one" data-hi="एक चुनें">Select one</option>
+                <option value="Beginner" data-en="Beginner" data-hi="शुरुआती">Beginner</option>
+                <option value="Intermediate" data-en="Intermediate" data-hi="मध्यम">Intermediate</option>
+                <option value="Advanced" data-en="Advanced" data-hi="उन्नत">Advanced</option>
+              </select>
+            </div>
+
+            <div class="form-group full-width">
+              <label for="experience" data-en="Have you ever received a suspicious message or scam attempt?" data-hi="क्या आपको कभी संदिग्ध संदेश या धोखाधड़ी का प्रयास मिला है?">Have you ever received a suspicious message or scam attempt?</label>
+              <select id="experience" name="suspicious-message-experience" required>
+                <option value="" data-en="Select one" data-hi="एक चुनें">Select one</option>
                 <option value="Yes" data-en="Yes" data-hi="हाँ">Yes</option>
                 <option value="No" data-en="No" data-hi="नहीं">No</option>
-                <option value="Unsure" data-en="Not sure" data-hi="निश्चित नहीं">Not sure</option>
+                <option value="Not sure" data-en="Not sure" data-hi="पता नहीं">Not sure</option>
               </select>
             </div>
 
-            <div class="field full">
-              <label for="surveyLearning" data-en="Which topic would you like to learn more about?" data-hi="आप किस विषय के बारे में और सीखना चाहते हैं?">Which topic would you like to learn more about?</label>
-              <select id="surveyLearning" name="learning-topic" required>
-                <option value="" data-en="Select a topic" data-hi="विषय चुनें">Select a topic</option>
-                <option value="Phishing" data-en="Phishing and fake links" data-hi="फ़िशिंग और नकली लिंक">Phishing and fake links</option>
-                <option value="UPI fraud" data-en="UPI and online payment fraud" data-hi="UPI और ऑनलाइन भुगतान धोखाधड़ी">UPI and online payment fraud</option>
-                <option value="Passwords" data-en="Passwords and account security" data-hi="पासवर्ड और खाता सुरक्षा">Passwords and account security</option>
-                <option value="Privacy" data-en="Privacy and personal data" data-hi="गोपनीयता और व्यक्तिगत डेटा">Privacy and personal data</option>
-                <option value="Reporting" data-en="Reporting cybercrime" data-hi="साइबर अपराध की रिपोर्ट करना">Reporting cybercrime</option>
-              </select>
-            </div>
-
-            <div class="field full">
-              <label for="surveySuggestions" data-en="Suggestions or comments (optional)" data-hi="सुझाव या टिप्पणियाँ (वैकल्पिक)">Suggestions or comments (optional)</label>
-              <textarea id="surveySuggestions" name="suggestions" rows="4" maxlength="1500" placeholder="Do not include passwords, OTPs, bank details, or other sensitive information."></textarea>
+            <div class="form-group full-width">
+              <label for="suggestion" data-en="What cyber safety topic would you like to learn about? (optional)" data-hi="आप साइबर सुरक्षा के किस विषय के बारे में जानना चाहते हैं? (वैकल्पिक)">What cyber safety topic would you like to learn about? (optional)</label>
+              <textarea id="suggestion" name="topic-suggestion" rows="4" maxlength="500"
+                placeholder="Your suggestion..."></textarea>
             </div>
           </div>
 
-          <p class="small-note"
-            data-en="Please do not submit passwords, OTPs, bank details, or other sensitive personal information."
-            data-hi="कृपया पासवर्ड, OTP, बैंक विवरण या अन्य संवेदनशील व्यक्तिगत जानकारी न दें।">
-            Please do not submit passwords, OTPs, bank details, or other sensitive personal information.
+          <p class="privacy-note" data-en="Do not include passwords, OTPs, bank details, or other sensitive information. Survey answers are submitted to the website owner after Netlify Forms is enabled."
+            data-hi="पासवर्ड, OTP, बैंक विवरण या अन्य संवेदनशील जानकारी न लिखें। Netlify Forms चालू होने पर आपके उत्तर वेबसाइट के मालिक को भेजे जाएँगे।">
+            Do not include passwords, OTPs, bank details, or other sensitive information. Survey answers are submitted to the website owner after Netlify Forms is enabled.
           </p>
 
-          <button class="btn" type="submit"
-            data-en="Submit Survey"
-            data-hi="सर्वेक्षण जमा करें">Submit Survey</button>
+          <button type="submit" class="btn btn-primary" data-en="Submit Survey" data-hi="सर्वे जमा करें">Submit Survey</button>
         </form>
       </div>
     </section>
 
-    <!-- GET HELP -->
-    <section id="help">
+    <section class="section help-section" id="help">
       <div class="container">
         <div class="section-heading">
-          <h2 data-en="Need Help? Report Cybercrime" data-hi="सहायता चाहिए? साइबर अपराध की रिपोर्ट करें">
-            Need Help? Report Cybercrime
-          </h2>
-          <p class="section-intro"
-            data-en="If you experience cyber fraud, act quickly and use official channels."
-            data-hi="साइबर धोखाधड़ी होने पर तुरंत कार्रवाई करें और आधिकारिक माध्यमों का उपयोग करें।">
-            If you experience cyber fraud, act quickly and use official channels.
+          <span class="eyebrow" data-en="OFFICIAL RESOURCES" data-hi="आधिकारिक संसाधन">OFFICIAL RESOURCES</span>
+          <h2 data-en="Where to Get Help in India" data-hi="भारत में सहायता कहाँ पाएँ">Where to Get Help in India</h2>
+          <p data-en="If a cyber incident happens, act quickly and use official channels."
+            data-hi="साइबर घटना होने पर जल्दी कार्रवाई करें और आधिकारिक माध्यमों का उपयोग करें।">
+            If a cyber incident happens, act quickly and use official channels.
           </p>
         </div>
 
         <div class="help-grid">
-          <article class="card">
-            <div class="card-icon">📞</div>
-            <h3 data-en="Financial Cyber Fraud" data-hi="वित्तीय साइबर धोखाधड़ी">Financial Cyber Fraud</h3>
-            <div class="help-number">1930</div>
-            <p data-en="Call India's cyber financial fraud helpline promptly and contact your bank."
-               data-hi="भारत की साइबर वित्तीय धोखाधड़ी हेल्पलाइन पर तुरंत कॉल करें और बैंक से संपर्क करें।">
-              Call India's cyber financial fraud helpline promptly and contact your bank.
+          <article class="help-card">
+            <span class="help-number">1930</span>
+            <h3 data-en="Financial Cyber Fraud Helpline" data-hi="वित्तीय साइबर धोखाधड़ी हेल्पलाइन">Financial Cyber Fraud Helpline</h3>
+            <p data-en="If you suspect online financial fraud, contact your bank or payment provider immediately and call 1930 promptly."
+              data-hi="ऑनलाइन वित्तीय धोखाधड़ी का संदेह हो तो तुरंत अपने बैंक या भुगतान सेवा से संपर्क करें और जल्द 1930 पर कॉल करें।">
+              If you suspect online financial fraud, contact your bank or payment provider immediately and call 1930 promptly.
             </p>
+            <a href="https://cybercrime.gov.in/" target="_blank" rel="noopener noreferrer"
+              data-en="Official Cyber Crime Portal ↗" data-hi="आधिकारिक साइबर अपराध पोर्टल ↗">Official Cyber Crime Portal ↗</a>
           </article>
 
-          <article class="card">
-            <div class="card-icon">🌐</div>
-            <h3 data-en="Official Cyber Crime Portal" data-hi="आधिकारिक साइबर अपराध पोर्टल">Official Cyber Crime Portal</h3>
-            <p data-en="Use the Government of India's portal to report cybercrime."
-               data-hi="साइबर अपराध की रिपोर्ट करने के लिए भारत सरकार के पोर्टल का उपयोग करें।">
-              Use the Government of India's portal to report cybercrime.
-            </p>
-            <p><a href="https://cybercrime.gov.in/" target="_blank" rel="noopener noreferrer">cybercrime.gov.in ↗</a></p>
-          </article>
-
-          <article class="card">
-            <div class="card-icon">🚨</div>
+          <article class="help-card">
+            <span class="help-number">112</span>
             <h3 data-en="Emergency Assistance" data-hi="आपातकालीन सहायता">Emergency Assistance</h3>
-            <div class="help-number">112</div>
-            <p data-en="For immediate danger in India, call 112 or contact local police."
-               data-hi="भारत में तत्काल खतरे की स्थिति में 112 पर कॉल करें या स्थानीय पुलिस से संपर्क करें।">
-              For immediate danger in India, call 112 or contact local police.
+            <p data-en="For an immediate emergency or danger in India, contact the emergency response service or local police."
+              data-hi="भारत में तत्काल आपातस्थिति या खतरे में आपातकालीन सेवा या स्थानीय पुलिस से संपर्क करें।">
+              For an immediate emergency or danger in India, contact the emergency response service or local police.
             </p>
+            <a href="https://112.gov.in/" target="_blank" rel="noopener noreferrer"
+              data-en="Official Emergency Portal ↗" data-hi="आधिकारिक आपातकालीन पोर्टल ↗">Official Emergency Portal ↗</a>
           </article>
         </div>
+        <p class="disclaimer" data-en="CyberAware is an educational student project. It is not a police service and does not submit police complaints for you."
+          data-hi="CyberAware एक शैक्षणिक छात्र परियोजना है। यह पुलिस सेवा नहीं है और आपकी ओर से पुलिस शिकायत दर्ज नहीं करती।">
+          CyberAware is an educational student project. It is not a police service and does not submit police complaints for you.
+        </p>
       </div>
     </section>
 
-    <!-- AI ASSISTANT -->
-    <section class="cream-section" id="assistant">
-      <div class="container chat-layout">
-        <div>
-          <span class="eyebrow"
-            data-en="CYBERAWARE AI ASSISTANT"
-            data-hi="CYBERAWARE AI सहायक">
-            CYBERAWARE AI ASSISTANT
-          </span>
-
-          <h2 style="font-size:clamp(32px,4vw,44px);line-height:1.2"
-            data-en="Have a cybersecurity question?"
-            data-hi="क्या साइबर सुरक्षा से जुड़ा कोई सवाल है?">
-            Have a cybersecurity question?
-          </h2>
-
-          <p class="section-intro"
-            data-en="Ask about online fraud, phishing, suspicious calls, UPI scams, account security, or reporting cybercrime."
-            data-hi="ऑनलाइन धोखाधड़ी, फ़िशिंग, संदिग्ध कॉल, UPI घोटालों, खाता सुरक्षा या साइबर अपराध की रिपोर्टिंग के बारे में पूछें।">
+    <section class="section chatbot-section" id="chatbot">
+      <div class="container chatbot-layout">
+        <div class="chatbot-intro">
+          <span class="eyebrow" data-en="CYBER SAFETY ASSISTANT" data-hi="साइबर सुरक्षा सहायक">CYBER SAFETY ASSISTANT</span>
+          <h2 data-en="Have a cyber safety question?" data-hi="साइबर सुरक्षा से जुड़ा सवाल है?">Have a cyber safety question?</h2>
+          <p data-en="Ask about online fraud, phishing, suspicious calls, UPI scams, account security, or reporting cybercrime."
+            data-hi="ऑनलाइन धोखाधड़ी, फ़िशिंग, संदिग्ध कॉल, UPI धोखाधड़ी, अकाउंट सुरक्षा या साइबर अपराध की रिपोर्टिंग के बारे में पूछें।">
             Ask about online fraud, phishing, suspicious calls, UPI scams, account security, or reporting cybercrime.
           </p>
 
-          <div class="suggestion-list">
-            <button class="suggestion" type="button"
-              data-question-en="I shared an OTP. What should I do now?"
-              data-question-hi="मैंने OTP साझा कर दिया। अब मुझे क्या करना चाहिए?"
-              data-en="I shared an OTP. What now?"
-              data-hi="मैंने OTP साझा कर दिया। अब क्या करूँ?">
-              I shared an OTP. What now?
-            </button>
-
-            <button class="suggestion" type="button"
-              data-question-en="How do I report online fraud in India?"
-              data-question-hi="मैं भारत में ऑनलाइन धोखाधड़ी की रिपोर्ट कैसे करूँ?"
-              data-en="How do I report online fraud?"
-              data-hi="ऑनलाइन धोखाधड़ी की रिपोर्ट कैसे करूँ?">
-              How do I report online fraud?
-            </button>
-
-            <button class="suggestion" type="button"
-              data-question-en="How can I identify a phishing message?"
-              data-question-hi="मैं फ़िशिंग संदेश की पहचान कैसे कर सकता हूँ?"
-              data-en="How do I identify phishing?"
-              data-hi="फ़िशिंग की पहचान कैसे करें?">
-              How do I identify phishing?
-            </button>
+          <div class="chat-suggestion-list">
+            <button type="button" class="suggestion" data-question-en="What should I do if I shared an OTP?" data-question-hi="अगर मैंने OTP साझा कर दिया है तो मुझे क्या करना चाहिए?"
+              data-en="I shared an OTP. What now?" data-hi="मैंने OTP साझा कर दिया। अब क्या करूँ?">I shared an OTP. What now?</button>
+            <button type="button" class="suggestion" data-question-en="How can I report online financial fraud in India?" data-question-hi="मैं भारत में ऑनलाइन वित्तीय धोखाधड़ी की रिपोर्ट कैसे करूँ?"
+              data-en="How do I report online fraud?" data-hi="ऑनलाइन धोखाधड़ी की रिपोर्ट कैसे करें?">How do I report online fraud?</button>
+            <button type="button" class="suggestion" data-question-en="How can I identify a phishing message?" data-question-hi="फ़िशिंग संदेश की पहचान कैसे करूँ?"
+              data-en="How do I identify phishing?" data-hi="फ़िशिंग की पहचान कैसे करें?">How do I identify phishing?</button>
           </div>
 
-          <div class="card">
-            <h3 data-en="Need to report cyber financial fraud?" data-hi="वित्तीय साइबर धोखाधड़ी की रिपोर्ट करनी है?">
-              Need to report cyber financial fraud?
-            </h3>
-            <p data-en="India's national cyber fraud helpline: 1930"
-               data-hi="भारत की राष्ट्रीय साइबर धोखाधड़ी हेल्पलाइन: 1930">
-              India's national cyber fraud helpline: 1930
-            </p>
-            <p><a href="https://cybercrime.gov.in/" target="_blank" rel="noopener noreferrer"
-              data-en="Official Cyber Crime Portal ↗"
-              data-hi="आधिकारिक साइबर अपराध पोर्टल ↗">Official Cyber Crime Portal ↗</a></p>
-            <p class="small-note"
-              data-en="For an emergency in India, call 112 or contact local police."
-              data-hi="भारत में आपातकाल के लिए 112 पर कॉल करें या स्थानीय पुलिस से संपर्क करें।">
+          <div class="official-contact">
+            <strong data-en="Need to report cyber financial fraud?" data-hi="वित्तीय साइबर धोखाधड़ी की रिपोर्ट करनी है?">Need to report cyber financial fraud?</strong>
+            <p data-en="India's national cyber fraud helpline: 1930" data-hi="भारत की राष्ट्रीय साइबर धोखाधड़ी हेल्पलाइन: 1930">India's national cyber fraud helpline: 1930</p>
+            <a href="https://cybercrime.gov.in/" target="_blank" rel="noopener noreferrer"
+              data-en="Official Cyber Crime Portal ↗" data-hi="आधिकारिक साइबर अपराध पोर्टल ↗">Official Cyber Crime Portal ↗</a>
+            <p class="field-help" data-en="For an emergency in India, call 112 or contact local police."
+              data-hi="भारत में आपातस्थिति में 112 पर कॉल करें या स्थानीय पुलिस से संपर्क करें।">
               For an emergency in India, call 112 or contact local police.
             </p>
           </div>
         </div>
 
-        <div class="chat-box">
+        <div class="chat-window">
           <div class="chat-header">
-            <h3 data-en="🛡️ CyberAware Assistant" data-hi="🛡️ CyberAware सहायक">
-              🛡️ CyberAware Assistant
-            </h3>
-            <p data-en="Cyber safety guidance for everyone"
-               data-hi="सभी के लिए साइबर सुरक्षा मार्गदर्शन">
-              Cyber safety guidance for everyone
-            </p>
+            <div class="chat-avatar">🛡️</div>
+            <div>
+              <h3>CyberAware Assistant</h3>
+              <p><span class="chat-status"></span> <span data-en="Cyber safety guidance" data-hi="साइबर सुरक्षा मार्गदर्शन">Cyber safety guidance</span></p>
+            </div>
           </div>
 
-          <div class="chat-messages" id="chatMessages" aria-live="polite">
-            <div class="chat-message bot-message"
+          <div class="chat-messages" id="chatMessages" role="log" aria-live="polite" aria-relevant="additions">
+            <div class="chat-message bot-message" id="chatWelcome"
               data-en="Hello! Ask me a cybersecurity question. Please do not share passwords, OTPs, bank details, or sensitive personal information."
-              data-hi="नमस्ते! साइबर सुरक्षा से जुड़ा सवाल पूछें। कृपया पासवर्ड, OTP, बैंक विवरण या संवेदनशील व्यक्तिगत जानकारी साझा न करें।">
+              data-hi="नमस्ते! साइबर सुरक्षा से जुड़ा सवाल पूछें। कृपया पासवर्ड, OTP, बैंक विवरण या संवेदनशील निजी जानकारी साझा न करें।">
               Hello! Ask me a cybersecurity question. Please do not share passwords, OTPs, bank details, or sensitive personal information.
             </div>
           </div>
 
           <form class="chat-form" id="chatForm">
-            <textarea
-              id="chatInput"
-              name="question"
-              rows="2"
-              maxlength="1000"
-              placeholder="Type your question..."
-              aria-label="Type a cyber safety question"
-              required
-            ></textarea>
-
-            <button class="btn" id="chatSend" type="submit"
-              data-en="Send ↑"
-              data-hi="भेजें ↑">Send ↑</button>
+            <label class="sr-only" for="chatInput" data-en="Ask a cyber safety question" data-hi="साइबर सुरक्षा का सवाल पूछें">Ask a cyber safety question</label>
+            <textarea id="chatInput" rows="2" maxlength="1000"
+              placeholder="Type your question..." required></textarea>
+            <button class="btn btn-primary" type="submit" id="chatSend"
+              data-en="Send ↑" data-hi="भेजें ↑">Send ↑</button>
           </form>
-
-          <p class="small-note" style="padding:0 18px 14px;margin:0"
-            data-en="AI guidance can be wrong. Verify important instructions through official sources. Do not enter sensitive personal information."
-            data-hi="AI की सलाह गलत हो सकती है। महत्वपूर्ण निर्देशों को आधिकारिक स्रोतों से जाँचें। संवेदनशील व्यक्तिगत जानकारी न दें।">
+          <p class="chat-disclaimer" data-en="AI guidance can be wrong. Verify important instructions through official sources. Do not enter sensitive personal information."
+            data-hi="AI की जानकारी गलत हो सकती है। महत्वपूर्ण निर्देशों की आधिकारिक स्रोतों से पुष्टि करें। संवेदनशील निजी जानकारी न लिखें।">
             AI guidance can be wrong. Verify important instructions through official sources. Do not enter sensitive personal information.
           </p>
         </div>
@@ -1203,20 +423,15 @@
     </section>
   </main>
 
-  <footer>
-    <div class="container">
-      <a class="brand" href="#home" style="justify-content:center;color:white">
-        <span class="brand-icon">🛡️</span>
-        <span>Cyber<span>Aware</span></span>
-      </a>
-      <p data-en="Cyber Security Awareness Among College Students and the Local Community"
-         data-hi="कॉलेज छात्रों और स्थानीय समुदाय में साइबर सुरक्षा जागरूकता">
-        Cyber Security Awareness Among College Students and the Local Community
+  <footer class="site-footer">
+    <div class="container footer-content">
+      <a class="brand footer-brand" href="#home"><span class="brand-icon">🛡️</span><span>Cyber<span class="orange">Aware</span></span></a>
+      <p data-en="A cyber security awareness field project for students and the local community."
+        data-hi="विद्यार्थियों और स्थानीय समुदाय के लिए साइबर सुरक्षा जागरूकता फील्ड प्रोजेक्ट।">
+        A cyber security awareness field project for students and the local community.
       </p>
-      <p>© <span id="year"></span> CyberAware. <span data-en="Stay alert. Stay safe." data-hi="सतर्क रहें। सुरक्षित रहें।">Stay alert. Stay safe.</span></p>
+      <span>© <span id="year"></span> CyberAware</span>
     </div>
   </footer>
-
-  <script src="script.js" defer></script>
 </body>
 </html>
